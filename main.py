@@ -64,5 +64,5 @@ def main():
         print("Average ACC is : %.2f" % (np.average(features_list)))
         print("SD of ACC is : %.2f" % (np.std(acc_list) * 100) + " SD of Feature is : %.2f" % (np.std(features_list)))
         print("Running Time: %s seconds\n\n" % round((time.time() - start_time), 2))
-
+        
 main()
