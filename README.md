@@ -22,3 +22,4 @@ To run the code, open `main.py` and specify a list of datasets to apply the meth
 
 ## Datasets
 All datasets must be stored in *Datasets* folder. 
+We use datasets from [Gene Expression Omnibus (GEO)](https://www.ncbi.nlm.nih.gov/geo/), and datasets can be cleaned by this [code](https://github.com/Majid1292/NCBIdataPrep).
