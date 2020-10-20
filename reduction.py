@@ -5,7 +5,6 @@ import random
 
 from mutual_info import compute_mi
 
-
 class svfs:
   round_threshold=3
   def __init__(self,x_train,class_label,x_threshold=3,diff_threshold=1.7,mean_threshold=4,n_feature_threshold=50,alpha=50,beta=5):
