@@ -1,4 +1,3 @@
-# SVFS
 ---
 Authors: "Majid Afshar and Hamid Usefi"
 Date: '01/10/20'
