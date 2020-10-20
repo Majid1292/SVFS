@@ -17,8 +17,8 @@ This code can be run using Python 3.2 and above. Also, the following packages sh
 * Networkx
 
 ## Run
-To run the code, open `main.py` and specify a list of datasets to apply the method. We note the dataset does not have any headers (neither the features nor the samples IDs). You can add any high dimensional dataset to  *datasets* and insert their name in the list of datasets in 'main.py'.
+To run the code, open `main.py` and specify a list of datasets to apply the method. We note the dataset does not have any headers (neither the features nor the samples IDs). You can add any high dimensional dataset to *Datasets* and insert their name in the list of datasets in 'main.py'.
 
 
 ## Datasets
-All datasets must be stored in *datasets* folder. 
+All datasets must be stored in *Datasets* folder. 
