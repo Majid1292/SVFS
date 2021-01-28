@@ -7,6 +7,7 @@ from mutual_info import compute_mi
 
 class svfs:
   round_threshold=3
+  soft_ther = 1
   def __init__(self,x_train,class_label,x_threshold=3,diff_threshold=1.7,mean_threshold=4,n_feature_threshold=50,alpha=50,beta=5):
       self.__A=x_train
       self.__b=class_label
@@ -23,16 +24,27 @@ class svfs:
       X = np.matmul(iA, self.__b)  # Matrix product of two arrays
       abs_X = abs(X)
       mean = np.mean(np.array(abs_X), axis=0)
-      high_x, = np.where(np.array(abs_X) > mean * (self.__x_threshold - 1))
+      high_x, = np.where(np.array(abs_X) > mean * (self.__x_threshold - svfs.soft_ther))
       return high_x
 
   def reduction(self):
       iA = np.linalg.pinv(self.__A)
       X = np.matmul(iA,self.__b)
       mean = np.mean(np.array(abs(X)), axis=0)
-      list_highX, = np.where(np.array(abs(X)) > mean * (self.__x_threshold - 1))
-      list_highX1, = np.where(np.array(abs(X)) > mean * self.__x_threshold)
-      diff_lenX = list_highX.shape[0] - list_highX1.shape[0]
+      flag=True
+      while flag: #adjusting the irrelevant threshold
+          list_highX, = np.where(np.array(abs(X)) > mean * (self.__x_threshold - svfs.soft_ther))
+          list_highX_low, = np.where(np.array(abs(X)) > mean * self.__x_threshold)
+          lenlX=len(list_highX)
+          if lenlX<10:
+              print("Select the lower value for irrelevant threshold and rerun the code")
+              quit()
+          diff_lenX = list_highX.shape[0] - list_highX_low.shape[0]
+          if lenlX <100 and len(X)>100:
+              flag=True
+              svfs.soft_ther+=0.1
+          else:
+              flag=False
       A = self.__A.iloc[:, np.array(list_highX)]
       num_features = A.shape[1]
       B = np.array(self.__b)[np.newaxis]
@@ -40,22 +52,23 @@ class svfs:
       iAB = np.linalg.pinv(AB)
       identity_matrix = np.identity(num_features + 1)
       S_AB = identity_matrix - (np.mat(iAB) * np.mat(AB))
-      ss = pd.DataFrame(S_AB)
-      round_S = pd.DataFrame(abs(np.array(S_AB).round(svfs.round_threshold)))
-      outliers_idx = []
-      outliers_val = []
-      S_colunm = abs(ss.copy().iloc[:, ss.shape[1] - 1])
-
-      sort_s_column = np.array(np.argsort(S_colunm)[::-1])
-
-      sort_idx = np.delete(sort_s_column, 0)
-      sort_idx = sort_idx[:len(sort_idx) - int(diff_lenX * self.__diff_threshold)]
+      df_S_AB = pd.DataFrame(S_AB)
+      S_colunm = abs(df_S_AB.copy().iloc[:, df_S_AB.shape[1] - 1])
+      S_col_noB=np.delete(np.array(S_colunm), num_features)
+      sort_s_column = np.array(np.argsort(S_col_noB)[::-1])
+      # =
+      flag=True
+      while flag: #adjusting the diff_irrelevant threshold
+            if int(diff_lenX * self.__diff_threshold) < lenlX/4:
+                sort_idx = sort_s_column[:len(sort_s_column) - int(diff_lenX * self.__diff_threshold)]
+                flag=False
+            self.__diff_threshold-=0.1
       return sort_idx
 
-  def selection(self):
-      list_highX = svfs.high_rank_x(self)
-      sort_idx = svfs.reduction(self)
-      clean_features = list_highX[sort_idx]
+  def selection(self,highX,reduced,clean_f):
+      list_highX = highX
+      sort_idx = reduced
+      clean_features = clean_f
       A_clean = self.__A[clean_features]
       num_features = A_clean.shape[1]
       iA = np.linalg.pinv(A_clean)
@@ -127,4 +140,3 @@ class svfs:
               dic_cls[root] = mi_info
               nodes = np.delete(nodes, rnd)
       return  dic_cls
-
