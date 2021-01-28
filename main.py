@@ -40,10 +40,10 @@ def main():
             best_acc = 0
             best_idx = 0
             fs = svfs(train_x, train_y, th_irr, 1.7, th_red, k, alpha, beta)
-            high_x = fs.high_rank_x()
             reduced_data = fs.reduction()
+            high_x = fs.high_rank_x()
             clean_features = high_x[reduced_data]
-            dic_cls = fs.selection()
+            dic_cls = fs.selection(high_x,reduced_data,clean_features)
             idx = 0
             for key, value in dic_cls.items():
                 list_features.append(clean_features[key])
