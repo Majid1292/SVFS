@@ -4,7 +4,9 @@ Date: '01/10/20'
 ---
 
 ## Notice
-The code of SVFS is available now, and a link to the paper will be provided soon. If you need more details and explanation about the algorithm, please contact [Majid Afshar](http://www.cs.mun.ca/~mman23/) or [Hamid Usefi](http://www.math.mun.ca/~usefi/).
+The code of SVFS is available now, and a link to the paper is given. If you need more details and explanation about the algorithm, please contact [Majid Afshar](http://www.cs.mun.ca/~mman23/) or [Hamid Usefi](http://www.math.mun.ca/~usefi/).
+
+Here is a link to the paper : https://www.nature.com/articles/s41598-021-83150-y
 
 ## Use case
 To determine the most important features using the algorithm described in "Dimensionality Reduction Using Singular Vectors" by Majid Afshar and Hamid Usefi
